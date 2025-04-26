@@ -10,7 +10,7 @@ class ABirdPawn : APawn
 	default BirdRenderComp.SetFlipbook(BirdFlipbook);
 
 	UPROPERTY()
-	float OrthoWidth = 1000.0;
+	float OrthoWidth = 520.0;
 
 	UPROPERTY(DefaultComponent)
 	UCameraComponent Camera;
