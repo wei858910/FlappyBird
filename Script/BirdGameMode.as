@@ -1,9 +1,12 @@
 class ABirdGameMode : AGameMode
 {
+	ABgActor BgActor;
+
 	default DefaultPawnClass = ABirdPawn::StaticClass();
 
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
+		BgActor = Cast<ABgActor>(SpawnActor(ABgActor::StaticClass(), FVector(0.0, -10.0, 0.0)));
 	}
 };
