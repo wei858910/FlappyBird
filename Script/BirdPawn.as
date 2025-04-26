@@ -18,9 +18,20 @@ class ABirdPawn : APawn
 	default Camera.SetProjectionMode(ECameraProjectionMode::Orthographic);
 	default Camera.SetRelativeLocation(FVector(0.0, 60.0, 0.0));
 	default Camera.SetOrthoWidth(OrthoWidth);
+	
+	UPROPERTY(DefaultComponent)
+	UInputComponent InputComp;
 
 	UFUNCTION(BlueprintOverride)
 	void BeginPlay()
 	{
+		InputComp.BindAction(n"DoFly", EInputEvent::IE_Pressed, Delegate = FInputActionHandlerDynamicSignature(this, n"OnDoFly"));
+	}
+
+
+	UFUNCTION()
+	private void OnDoFly(FKey Key)
+	{
+		Log("OnDoFly called !!!");
 	}
 };
