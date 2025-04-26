@@ -1,0 +1,22 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{2A0E8845-4690-3609-C9F8-81BAFA3AF1F2}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "FlappyBird",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		}
+	]
+}
