@@ -13,6 +13,9 @@ class ABirdPawn : APawn
     default BirdRenderComp.BodyInstance.bLockZRotation = true;
     default BirdRenderComp.BodyInstance.bLockXTranslation = true;
     default BirdRenderComp.BodyInstance.bLockYTranslation = true;
+    default BirdRenderComp.SetCollisionProfileName(n"OverlapAll");
+    default BirdRenderComp.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    default BirdRenderComp.OnComponentBeginOverlap.AddUFunction(this, n"OnBirdRenderComponentBeginOverlap");
 
     UPROPERTY()
     float OrthoWidth = 520.0;
@@ -30,9 +33,16 @@ class ABirdPawn : APawn
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
 
+    UFUNCTION()
+    private void OnBirdRenderComponentBeginOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor, UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult&in SweepResult)
+    {
+        Log("OK");
+    }
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+
         InputComp.BindAction(n"DoFly", EInputEvent::IE_Pressed, Delegate = FInputActionHandlerDynamicSignature(this, n"OnDoFly"));
     }
 
