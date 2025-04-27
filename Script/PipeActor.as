@@ -14,8 +14,9 @@ class APipeActor : AActor
 
     float MinOffsetZ = -80;
     float MaxOffsetZ = 150;
-    float DistanceX = 150.0;
+    float DistanceX = 220.0;
     float PositionX = 150.0;
+    float PipeOutOfRange = -200.0;
 
     const int32 GroupSize = 3;
 
@@ -70,9 +71,15 @@ class APipeActor : AActor
 
     protected void UpdatePipeMove(float DeltaSeconds)
     {
-        for (auto Pipe : PipeGroup)
+        for (int32 i = 0; i < GroupSize; i++)
         {
-            Pipe.AddRelativeLocation(FVector::ForwardVector * PipeMoveSpeed * -1 * DeltaSeconds);
+            PipeGroup[i].AddRelativeLocation(FVector::ForwardVector * PipeMoveSpeed * -1 * DeltaSeconds);
+            if (PipeGroup[i].GetRelativeLocation().X < PipeOutOfRange)
+            {
+                int32 FollowSite = i == 0 ? GroupSize - 1 : i - 1;
+                float LastPipePositionX = PipeGroup[FollowSite].GetRelativeLocation().X;
+                PipeGroup[i].SetRelativeLocation(FVector(LastPipePositionX, 0.0, RandPipeGroupOffsetZ()) + FVector::ForwardVector * DistanceX);
+            }
         }
     }
 };
