@@ -5,6 +5,7 @@ class ABirdGameMode : AGameMode
     APipeActor PipeActor;
 
     default DefaultPawnClass = ABirdPawn::StaticClass();
+    default GameStateClass = ABirdGameState::StaticClass();
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()

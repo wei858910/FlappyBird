@@ -94,8 +94,14 @@ class APipeActor : AActor
 
             if (PipeGroup[i].GetRelativeLocation().X < ScorePosition && !PipeGroupUsed[i])
             {
-                Log("add score");
                 PipeGroupUsed[i] = true;
+				ABirdGameState BirdGameState = Cast<ABirdGameState>(Gameplay::GetGameState());
+				if(IsValid(BirdGameState))
+				{
+					BirdGameState.AddScore();
+					int32 BirdScore = BirdGameState.GetScore();
+					Log(f"Score = {BirdScore}");
+				}
             }
         }
     }
