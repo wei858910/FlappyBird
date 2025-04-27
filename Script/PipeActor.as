@@ -19,6 +19,8 @@ class APipeActor : AActor
 
 	const int32 GroupSize = 3;
 
+	float PipeMoveSpeed = 100.0;
+
 	UFUNCTION(BlueprintOverride)
 	void ConstructionScript()
 	{
@@ -50,6 +52,7 @@ class APipeActor : AActor
 	UFUNCTION(BlueprintOverride)
 	void Tick(float DeltaSeconds)
 	{
+		UpdatePipeMove(DeltaSeconds);
 	}
 
 	void ResetPipeGroupPosition()
@@ -63,5 +66,13 @@ class APipeActor : AActor
 protected float RandPipeGroupOffsetZ()
 	{
 		return Math::RandRange(MinOffsetZ, MaxOffsetZ);
+	}
+
+protected void UpdatePipeMove(float DeltaSeconds)
+	{
+		for (auto Pipe : PipeGroup)
+		{
+			Pipe.AddRelativeLocation(FVector::ForwardVector * PipeMoveSpeed * -1 * DeltaSeconds);
+		}
 	}
 };
