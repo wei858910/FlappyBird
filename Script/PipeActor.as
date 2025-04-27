@@ -9,10 +9,20 @@ class APipeActor : AActor
 	UPaperSprite UpPipeSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_up_Sprite.pipe_up_Sprite"));
 	UPaperSprite DownPipSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_down_Sprite.pipe_down_Sprite"));
 
+	float UpPipeSpritePositionZ = 230;
+	float DownPipSpritePositionZ = -230;
+
+	float MinOffsetZ = -80;
+	float MaxOffsetZ = 150;
+	float DistanceX = 150.0;
+	float PositionX = 150.0;
+
+	const int32 GroupSize = 3;
+
 	UFUNCTION(BlueprintOverride)
 	void ConstructionScript()
 	{
-		for (int32 i = 0; i < 3; i++)
+		for (int32 i = 0; i < GroupSize; i++)
 		{
 			USceneComponent GroupRoot = Cast<USceneComponent>(CreateComponent(USceneComponent::StaticClass(), FName(f"GroupRootComp{i}")));
 			GroupRoot.AttachToComponent(RootComponent);
@@ -24,12 +34,11 @@ class APipeActor : AActor
 			UpPipeSpriteComp.AttachToComponent(GroupRoot, GroupRoot.Name);
 			DownPipSpriteComp.AttachToComponent(GroupRoot, GroupRoot.Name);
 
-			UpPipeSpriteComp.SetRelativeLocation(FVector(0, 0, 230));
-			DownPipSpriteComp.SetRelativeLocation(FVector(0, 0, -230));
+			UpPipeSpriteComp.SetRelativeLocation(FVector(0, 0, UpPipeSpritePositionZ));
+			DownPipSpriteComp.SetRelativeLocation(FVector(0, 0, DownPipSpritePositionZ));
 
 			PipeGroup.Add(GroupRoot);
 		}
-
 	}
 
 	UFUNCTION(BlueprintOverride)
@@ -45,9 +54,14 @@ class APipeActor : AActor
 
 	void ResetPipeGroupPosition()
 	{
-		for (int32 i = 0; i < 3; i++)
+		for (int32 i = 0; i < GroupSize; i++)
 		{
-			PipeGroup[i].SetRelativeLocation(FVector(150.0 + i * 150.0, 0.0, 0.0));
+			PipeGroup[i].SetRelativeLocation(FVector(PositionX + i * DistanceX, 0.0, RandPipeGroupOffsetZ()));
 		}
+	}
+
+protected float RandPipeGroupOffsetZ()
+	{
+		return Math::RandRange(MinOffsetZ, MaxOffsetZ);
 	}
 };
