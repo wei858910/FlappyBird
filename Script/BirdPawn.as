@@ -10,6 +10,7 @@ class ABirdPawn : APawn
 	default BirdRenderComp.SetFlipbook(BirdFlipbook);
 	default BirdRenderComp.BodyInstance.bLockXRotation = true;
 	default BirdRenderComp.BodyInstance.bLockYRotation = true;
+	default BirdRenderComp.BodyInstance.bLockZRotation = true;
 
 	UPROPERTY()
 	float OrthoWidth = 520.0;
