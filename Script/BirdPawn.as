@@ -17,7 +17,7 @@ class ABirdPawn : APawn
     UPaperFlipbook BirdFlipbook = Cast<UPaperFlipbook>(LoadObject(nullptr, "/Game/Animations/Birds/PF_RedBrid.PF_RedBrid"));
     default BirdRenderComp.SetFlipbook(BirdFlipbook);
     default BirdRenderComp.BodyInstance.bLockXRotation = true;
-    default BirdRenderComp.BodyInstance.bLockYRotation = true;
+    // default BirdRenderComp.BodyInstance.bLockYRotation = true;
     default BirdRenderComp.BodyInstance.bLockZRotation = true;
     default BirdRenderComp.BodyInstance.bLockXTranslation = true;
     default BirdRenderComp.BodyInstance.bLockYTranslation = true;
@@ -43,17 +43,18 @@ class ABirdPawn : APawn
 
     protected EBirdState CurrentBirdState;
 
-    UFUNCTION()
-    private void OnBirdRenderComponentBeginOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor, UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult&in SweepResult)
-    {
-        Log("OK");
-    }
+    protected float UpVelocityFactor = 15.0;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
-
         InputComp.BindAction(n"DoFly", EInputEvent::IE_Pressed, Delegate = FInputActionHandlerDynamicSignature(this, n"OnDoFly"));
+    }
+
+    UFUNCTION(BlueprintOverride)
+    void Tick(float DeltaSeconds)
+    {
+        UpdateBirdHeadOrientation(DeltaSeconds);
     }
 
     void ChangeBirdState(EBirdState State)
@@ -88,5 +89,24 @@ class ABirdPawn : APawn
 
         BirdRenderComp.SetPhysicsLinearVelocity(FVector::ZeroVector);
         BirdRenderComp.AddImpulse(FVector::UpVector * Impulse, NAME_None, true);
+    }
+
+    UFUNCTION()
+    private void OnBirdRenderComponentBeginOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor, UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult&in SweepResult)
+    {
+        Log("OK");
+    }
+
+    protected void UpdateBirdHeadOrientation(float DeltaSeconds)
+    {
+        if (CurrentBirdState == EBirdState::EBS_Fly)
+        {
+            FVector UpVelocity = BirdRenderComp.GetPhysicsLinearVelocity();
+            // Log(f"{UpVelocity}");
+
+            float PitchValue = UpVelocity.Z * UpVelocityFactor * DeltaSeconds;
+
+            BirdRenderComp.SetRelativeRotation(FRotator(PitchValue, 0.0, 0.0));
+        }
     }
 };
