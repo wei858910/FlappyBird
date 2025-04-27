@@ -9,18 +9,18 @@ class APipeActor : AActor
     UPaperSprite UpPipeSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_up_Sprite.pipe_up_Sprite"));
     UPaperSprite DownPipSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_down_Sprite.pipe_down_Sprite"));
 
-    float UpPipeSpritePositionZ = 230;
-    float DownPipSpritePositionZ = -230;
+    protected float UpPipeSpritePositionZ = 230;
+    protected float DownPipSpritePositionZ = -230;
 
-    float MinOffsetZ = -80;
-    float MaxOffsetZ = 150;
-    float DistanceX = 220.0;
-    float PositionX = 150.0;
-    float PipeOutOfRange = -200.0;
+    protected float MinOffsetZ = -80;
+    protected float MaxOffsetZ = 150;
+    protected float DistanceX = 220.0;
+    protected float PositionX = 150.0;
+    protected float PipeOutOfRange = -200.0;
 
-    const int32 GroupSize = 3;
+    protected const int32 GroupSize = 3;
 
-    float PipeMoveSpeed = 100.0;
+    protected float PipeMoveSpeed = 0.0;
 
     UFUNCTION(BlueprintOverride)
     void ConstructionScript()
@@ -63,6 +63,11 @@ class APipeActor : AActor
             PipeGroup[i].SetRelativeLocation(FVector(PositionX + i * DistanceX, 0.0, RandPipeGroupOffsetZ()));
         }
     }
+
+	void SetPipeMoveSpeed(float Speed = 100.0)
+	{
+		PipeMoveSpeed = Speed;
+	}
 
     protected float RandPipeGroupOffsetZ()
     {

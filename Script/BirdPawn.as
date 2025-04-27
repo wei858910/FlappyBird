@@ -1,3 +1,11 @@
+enum EBirdState
+{
+    EBS_Idle,
+    EBS_Fly,
+    EBS_Drop,
+    EBS_Dead
+}
+
 class ABirdPawn : APawn
 {
     UPROPERTY(DefaultComponent, RootComponent)
@@ -33,6 +41,8 @@ class ABirdPawn : APawn
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
 
+    protected EBirdState CurrentBirdState;
+
     UFUNCTION()
     private void OnBirdRenderComponentBeginOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor, UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult&in SweepResult)
     {
@@ -46,12 +56,36 @@ class ABirdPawn : APawn
         InputComp.BindAction(n"DoFly", EInputEvent::IE_Pressed, Delegate = FInputActionHandlerDynamicSignature(this, n"OnDoFly"));
     }
 
+    void ChangeBirdState(EBirdState State)
+    {
+        if (CurrentBirdState == State)
+        {
+            return;
+        }
+
+        switch (State)
+        {
+            case EBirdState::EBS_Idle:
+                break;
+            case EBirdState::EBS_Fly:
+                BirdRenderComp.SetSimulatePhysics(true);
+                break;
+            case EBirdState::EBS_Drop:
+                break;
+            case EBirdState::EBS_Dead:
+                break;
+        }
+        CurrentBirdState = State;
+    }
+
     UFUNCTION()
     private void OnDoFly(FKey Key)
     {
-        Log("OnDoFly called !!!");
+        if (CurrentBirdState != EBirdState::EBS_Fly)
+        {
+            return;
+        }
 
-        BirdRenderComp.SetSimulatePhysics(true);
         BirdRenderComp.SetPhysicsLinearVelocity(FVector::ZeroVector);
         BirdRenderComp.AddImpulse(FVector::UpVector * Impulse, NAME_None, true);
     }
