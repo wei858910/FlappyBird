@@ -22,7 +22,7 @@ class ABirdPawn : APawn
     default BirdRenderComp.BodyInstance.bLockXTranslation = true;
     default BirdRenderComp.BodyInstance.bLockYTranslation = true;
     default BirdRenderComp.SetCollisionProfileName(n"OverlapAll");
-    default BirdRenderComp.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    // default BirdRenderComp.SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     default BirdRenderComp.OnComponentBeginOverlap.AddUFunction(this, n"OnBirdRenderComponentBeginOverlap");
 
     UPROPERTY()

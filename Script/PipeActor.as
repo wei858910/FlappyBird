@@ -6,6 +6,10 @@ class APipeActor : AActor
     UPROPERTY()
     TArray<USceneComponent> PipeGroup;
 
+    protected TArray<bool> PipeGroupUsed;
+
+    protected float ScorePosition = -130;
+
     UPaperSprite UpPipeSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_up_Sprite.pipe_up_Sprite"));
     UPaperSprite DownPipSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_down_Sprite.pipe_down_Sprite"));
 
@@ -41,6 +45,7 @@ class APipeActor : AActor
             DownPipSpriteComp.SetRelativeLocation(FVector(0, 0, DownPipSpritePositionZ));
 
             PipeGroup.Add(GroupRoot);
+            PipeGroupUsed.Add(false);
         }
     }
 
@@ -64,10 +69,10 @@ class APipeActor : AActor
         }
     }
 
-	void SetPipeMoveSpeed(float Speed = 100.0)
-	{
-		PipeMoveSpeed = Speed;
-	}
+    void SetPipeMoveSpeed(float Speed = 100.0)
+    {
+        PipeMoveSpeed = Speed;
+    }
 
     protected float RandPipeGroupOffsetZ()
     {
@@ -84,6 +89,13 @@ class APipeActor : AActor
                 int32 FollowSite = i == 0 ? GroupSize - 1 : i - 1;
                 float LastPipePositionX = PipeGroup[FollowSite].GetRelativeLocation().X;
                 PipeGroup[i].SetRelativeLocation(FVector(LastPipePositionX, 0.0, RandPipeGroupOffsetZ()) + FVector::ForwardVector * DistanceX);
+                PipeGroupUsed[i] = false;
+            }
+
+            if (PipeGroup[i].GetRelativeLocation().X < ScorePosition && !PipeGroupUsed[i])
+            {
+                Log("add score");
+                PipeGroupUsed[i] = true;
             }
         }
     }
