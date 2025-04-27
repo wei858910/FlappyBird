@@ -13,7 +13,8 @@ class ABirdGameState : AGameState
         {
             CoinSound = Cast<USoundWave>(LoadObject(nullptr, "/Game/Sounds/coin.coin"));
         }
-        else
+
+        if (IsValid(CoinSound))
         {
             Gameplay::PlaySound2D(CoinSound);
         }
