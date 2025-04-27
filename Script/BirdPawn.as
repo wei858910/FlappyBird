@@ -11,6 +11,8 @@ class ABirdPawn : APawn
     default BirdRenderComp.BodyInstance.bLockXRotation = true;
     default BirdRenderComp.BodyInstance.bLockYRotation = true;
     default BirdRenderComp.BodyInstance.bLockZRotation = true;
+    default BirdRenderComp.BodyInstance.bLockXTranslation = true;
+    default BirdRenderComp.BodyInstance.bLockYTranslation = true;
 
     UPROPERTY()
     float OrthoWidth = 520.0;
