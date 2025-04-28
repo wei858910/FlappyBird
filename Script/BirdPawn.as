@@ -48,11 +48,17 @@ class ABirdPawn : APawn
     protected float BobbingDirection = 1.0;
     protected float BobbingFactor = 25.0;
     protected float BobbingRange = 10.0;
+    protected float CurveTick = 0.0;
+
+    UPROPERTY()
+    UCurveFloat BobbingCurve;
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
         InputComp.BindAction(n"DoFly", EInputEvent::IE_Pressed, Delegate = FInputActionHandlerDynamicSignature(this, n"OnDoFly"));
+
+        BobbingCurve = Cast<UCurveFloat>(LoadObject(nullptr, "/Game/Data/Curve/CV_BirdBobbing.CV_BirdBobbing"));
     }
 
     UFUNCTION(BlueprintOverride)
@@ -144,13 +150,26 @@ class ABirdPawn : APawn
     {
         if (CurrentBirdState == EBirdState::EBS_Idle)
         {
-            BirdRenderComp.AddRelativeLocation(FVector::UpVector * BobbingDirection * BobbingFactor * DeltaSeconds);
-            // if(BirdRenderComp.GetRelativeLocation().Z > BobbingMaxRange || BirdRenderComp.GetRelativeLocation().Z < BobbingMinRange)
-            // {
-            //     BobbingDirection *= -1.0;
-            // }
+            // BirdRenderComp.AddRelativeLocation(FVector::UpVector * BobbingDirection * BobbingFactor * DeltaSeconds);
+            // // if(BirdRenderComp.GetRelativeLocation().Z > BobbingMaxRange || BirdRenderComp.GetRelativeLocation().Z < BobbingMinRange)
+            // // {
+            // //     BobbingDirection *= -1.0;
+            // // }
 
-            BobbingDirection *= (Math::Abs(BirdRenderComp.GetRelativeLocation().Z) > BobbingRange ? -1 : 1);
+            // BobbingDirection *= (Math::Abs(BirdRenderComp.GetRelativeLocation().Z) > BobbingRange ? -1 : 1);
+
+            float32 MinTime = 0.0;
+            float32 MaxTime = 0.0;
+            BobbingCurve.GetTimeRange(MinTime, MaxTime);
+
+            CurveTick += DeltaSeconds;
+            if (CurveTick > MaxTime)
+            {
+                CurveTick = MinTime;
+            }
+
+            float Value = BobbingCurve.GetFloatValue(CurveTick);
+            BirdRenderComp.SetRelativeLocation(FVector(0.0, 0.0, Value * BobbingFactor));
         }
     }
 };
