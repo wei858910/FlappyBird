@@ -10,8 +10,8 @@ class APipeActor : AActor
 
     protected float ScorePosition = -130;
 
-    UPaperSprite UpPipeSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_up_Sprite.pipe_up_Sprite"));
-    UPaperSprite DownPipSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_down_Sprite.pipe_down_Sprite"));
+    UPaperSprite UpPipeSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_down_Sprite.pipe_down_Sprite"));
+    UPaperSprite DownPipSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_up_Sprite.pipe_up_Sprite"));
 
     protected float UpPipeSpritePositionZ = 230;
     protected float DownPipSpritePositionZ = -230;
@@ -95,13 +95,13 @@ class APipeActor : AActor
             if (PipeGroup[i].GetRelativeLocation().X < ScorePosition && !PipeGroupUsed[i])
             {
                 PipeGroupUsed[i] = true;
-				ABirdGameState BirdGameState = Cast<ABirdGameState>(Gameplay::GetGameState());
-				if(IsValid(BirdGameState))
-				{
-					BirdGameState.AddScore();
-					int32 BirdScore = BirdGameState.GetScore();
-					Log(f"Score = {BirdScore}");
-				}
+                ABirdGameState BirdGameState = Cast<ABirdGameState>(Gameplay::GetGameState());
+                if (IsValid(BirdGameState))
+                {
+                    BirdGameState.AddScore();
+                    int32 BirdScore = BirdGameState.GetScore();
+                    Log(f"Score = {BirdScore}");
+                }
             }
         }
     }
