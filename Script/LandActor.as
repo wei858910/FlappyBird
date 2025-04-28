@@ -25,7 +25,7 @@ class ALandActor : AActor
     default LandMeshComp.SetMaterial(0, LandMat);
 
     UPROPERTY()
-    protected float LandMoveSpeed = 0.1;
+    protected float LandMoveSpeed = 0.2;
 
     // float MoveSize = 336.0;
     // float OutOfRange = -336.0;
@@ -36,7 +36,7 @@ class ALandActor : AActor
         LandMeshComp.SetScalarParameterValueOnMaterials(n"LandMoveSpeed", LandMoveSpeed);
     }
 
-    void SetLandMoveSpeed(float Speed)
+    void SetLandMoveSpeed(float Speed = 0.2)
     {
         LandMoveSpeed = Speed;
         LandMeshComp.SetScalarParameterValueOnMaterials(n"LandMoveSpeed", LandMoveSpeed);

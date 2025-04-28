@@ -50,7 +50,7 @@ class ABirdGameMode : AGameMode
 
         if (IsValid(LandActor))
         {
-            LandActor.SetLandMoveSpeed(0.1);
+            LandActor.SetLandMoveSpeed();
         }
 
         BirdPawn = Cast<ABirdPawn>(Gameplay::GetPlayerPawn(0));
@@ -109,7 +109,7 @@ class ABirdGameMode : AGameMode
 
         if (IsValid(LandActor))
         {
-            LandActor.SetLandMoveSpeed(0.1);
+            LandActor.SetLandMoveSpeed();
         }
 
         if (IsValid(PipeActor))
