@@ -36,11 +36,11 @@ class ALandActor : AActor
     //     LandMeshComp.SetScalarParameterValueOnMaterials(n"LandMoveSpeed", LandMoveSpeed);
     // }
 
-	void SetLandMoveSpeed(float Speed = 0.1)
-	{
-		LandMoveSpeed = Speed;
+    void SetLandMoveSpeed(float Speed = 0.1)
+    {
+        LandMoveSpeed = Speed;
         LandMeshComp.SetScalarParameterValueOnMaterials(n"LandMoveSpeed", LandMoveSpeed);
-	}
+    }
 
     // UFUNCTION(BlueprintOverride)
     // void Tick(float DeltaSeconds)
