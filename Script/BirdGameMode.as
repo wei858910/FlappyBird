@@ -3,6 +3,7 @@ enum EBirdGameState
     EBGS_Menu,
     EBGS_Gaming,
     EBGS_BirdDrop,
+    EBGS_ResetGame,
     EBGS_GameOver
 }
 
@@ -35,6 +36,8 @@ class ABirdGameMode : AGameMode
         }
         else if (State == 1) // Reset Game
         {
+            ResetGame();
+            ChangeBirdGameState(EBirdGameState::EBGS_Menu);
         }
     }
 
@@ -69,7 +72,13 @@ class ABirdGameMode : AGameMode
             case EBirdGameState::EBGS_BirdDrop:
                 StopSceneObject();
                 break;
+            case EBirdGameState::EBGS_ResetGame:
+                ResetGame();
+                break;
             case EBirdGameState::EBGS_GameOver:
+                StopSceneObject();
+                break;
+            default:
                 break;
         }
         CurrentGameState = State;
@@ -88,6 +97,24 @@ class ABirdGameMode : AGameMode
         if (IsValid(BirdPawn))
         {
             BirdPawn.ChangeBirdState(EBirdState::EBS_Drop);
+        }
+    }
+
+    protected void ResetGame()
+    {
+        if (IsValid(BgActor))
+        {
+            BgActor.RandomBgSprite();
+        }
+
+        if (IsValid(PipeActor))
+        {
+            PipeActor.ResetPipeGroupPosition();
+        }
+
+        if (IsValid(BirdPawn))
+        {
+            BirdPawn.ChangeBirdState(EBirdState::EBS_Idle);
         }
     }
 };

@@ -67,6 +67,8 @@ class ABirdPawn : APawn
         switch (State)
         {
             case EBirdState::EBS_Idle:
+                BirdRenderComp.SetRelativeLocation(FVector::ZeroVector);
+                BirdRenderComp.SetRelativeRotation(FRotator::ZeroRotator);
                 break;
             case EBirdState::EBS_Fly:
                 BirdRenderComp.SetSimulatePhysics(true);

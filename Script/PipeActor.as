@@ -19,7 +19,7 @@ class APipeActor : AActor
     protected float MinOffsetZ = -80;
     protected float MaxOffsetZ = 150;
     protected float DistanceX = 220.0;
-    protected float PositionX = 150.0;
+    protected float PositionX = 180.0;
     protected float PipeOutOfRange = -200.0;
 
     protected const int32 GroupSize = 3;
