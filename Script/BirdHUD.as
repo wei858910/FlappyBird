@@ -69,7 +69,8 @@ class ABirdHUD : AHUD
             {
                 for (int32 i = 0; i < NumSize; ++i)
                 {
-                    DrawTextureSimple(NumberTextureArray[Nums[NumSize - i - 1]], CenterX - NumTextureHalfWidth + i * NumberOffset, PositionY);
+                    float DrawX = CenterX - (NumSize * NumberOffset)/2.0;
+                    DrawTextureSimple(NumberTextureArray[Nums[NumSize - i - 1]], DrawX + i * NumberOffset, PositionY);
                 }
             }
         }
