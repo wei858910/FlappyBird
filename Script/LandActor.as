@@ -25,18 +25,18 @@ class ALandActor : AActor
     default LandMeshComp.SetMaterial(0, LandMat);
 
     UPROPERTY()
-    protected float LandMoveSpeed = 0.0;
+    protected float LandMoveSpeed = 0.1;
 
     // float MoveSize = 336.0;
     // float OutOfRange = -336.0;
 
-    // UFUNCTION(BlueprintOverride)
-    // void BeginPlay()
-    // {
-    //     LandMeshComp.SetScalarParameterValueOnMaterials(n"LandMoveSpeed", LandMoveSpeed);
-    // }
+    UFUNCTION(BlueprintOverride)
+    void BeginPlay()
+    {
+        LandMeshComp.SetScalarParameterValueOnMaterials(n"LandMoveSpeed", LandMoveSpeed);
+    }
 
-    void SetLandMoveSpeed(float Speed = 0.1)
+    void SetLandMoveSpeed(float Speed)
     {
         LandMoveSpeed = Speed;
         LandMeshComp.SetScalarParameterValueOnMaterials(n"LandMoveSpeed", LandMoveSpeed);
