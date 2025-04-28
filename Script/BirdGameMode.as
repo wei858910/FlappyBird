@@ -18,6 +18,7 @@ class ABirdGameMode : AGameMode
 
     default DefaultPawnClass = ABirdPawn::StaticClass();
     default GameStateClass = ABirdGameState::StaticClass();
+    default HUDClass = ABirdHUD::StaticClass();
 
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
@@ -119,7 +120,13 @@ class ABirdGameMode : AGameMode
 
         if (IsValid(BirdPawn))
         {
-            BirdPawn.ChangeBirdState(EBirdState::EBS_Idle);
+            BirdPawn.ChangeBirdState(EBirdState::EBS_Idle);      
+        }
+
+        ABirdGameState BirdGameState = Cast<ABirdGameState>(Gameplay::GetGameState());
+        if(IsValid(BirdGameState))
+        {
+            BirdGameState.ResetScore();
         }
     }
 };
