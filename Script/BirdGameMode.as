@@ -25,7 +25,7 @@ class ABirdGameMode : AGameMode
     {
         BgActor = Cast<ABgActor>(SpawnActor(ABgActor::StaticClass(), FVector(0.0, -10.0, 0.0)));
         LandActor = Cast<ALandActor>(SpawnActor(ALandActor::StaticClass(), FVector(0.0, 2.0, -210)));
-        PipeActor = Cast<APipeActor>(SpawnActor(APipeActor::StaticClass()));
+        PipeActor = Cast<APipeActor>(SpawnActor(APipeActor::StaticClass(), FVector(0., -1., 0.)));
     }
 
     UFUNCTION(Exec)
@@ -120,11 +120,11 @@ class ABirdGameMode : AGameMode
 
         if (IsValid(BirdPawn))
         {
-            BirdPawn.ChangeBirdState(EBirdState::EBS_Idle);      
+            BirdPawn.ChangeBirdState(EBirdState::EBS_Idle);
         }
 
         ABirdGameState BirdGameState = Cast<ABirdGameState>(Gameplay::GetGameState());
-        if(IsValid(BirdGameState))
+        if (IsValid(BirdGameState))
         {
             BirdGameState.ResetScore();
         }
