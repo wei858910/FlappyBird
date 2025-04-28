@@ -45,6 +45,10 @@ class ABirdPawn : APawn
 
     protected float UpVelocityFactor = 15.0;
 
+    protected float BobbingDirection = 1.0;
+    protected float BobbingFactor = 25.0;
+    protected float BobbingRange = 10.0;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -55,6 +59,7 @@ class ABirdPawn : APawn
     void Tick(float DeltaSeconds)
     {
         UpdateBirdHeadOrientation(DeltaSeconds);
+        BobbingFlight(DeltaSeconds);
     }
 
     void ChangeBirdState(EBirdState State)
@@ -132,6 +137,20 @@ class ABirdPawn : APawn
             float PitchValue = UpVelocity.Z * UpVelocityFactor * DeltaSeconds;
 
             BirdRenderComp.SetRelativeRotation(FRotator(PitchValue, 0.0, 0.0));
+        }
+    }
+
+    protected void BobbingFlight(float DeltaSeconds)
+    {
+        if (CurrentBirdState == EBirdState::EBS_Idle)
+        {
+            BirdRenderComp.AddRelativeLocation(FVector::UpVector * BobbingDirection * BobbingFactor * DeltaSeconds);
+            // if(BirdRenderComp.GetRelativeLocation().Z > BobbingMaxRange || BirdRenderComp.GetRelativeLocation().Z < BobbingMinRange)
+            // {
+            //     BobbingDirection *= -1.0;
+            // }
+
+            BobbingDirection *= (Math::Abs(BirdRenderComp.GetRelativeLocation().Z) > BobbingRange ? -1 : 1);
         }
     }
 };
