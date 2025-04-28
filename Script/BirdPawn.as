@@ -29,7 +29,7 @@ class ABirdPawn : APawn
     float OrthoWidth = 520.0;
 
     UPROPERTY()
-    float Impulse = 400.0;
+    float Impulse = 300.0;
 
     UPROPERTY(DefaultComponent)
     UCameraComponent Camera;
@@ -41,7 +41,7 @@ class ABirdPawn : APawn
     UPROPERTY(DefaultComponent)
     UInputComponent InputComp;
 
-    protected EBirdState CurrentBirdState;
+    protected EBirdState CurrentBirdState = EBirdState::EBS_Idle;
 
     protected float UpVelocityFactor = 15.0;
 
@@ -74,6 +74,7 @@ class ABirdPawn : APawn
             case EBirdState::EBS_Drop:
                 break;
             case EBirdState::EBS_Dead:
+                BirdRenderComp.SetSimulatePhysics(false);
                 break;
         }
         CurrentBirdState = State;
@@ -94,12 +95,34 @@ class ABirdPawn : APawn
     UFUNCTION()
     private void OnBirdRenderComponentBeginOverlap(UPrimitiveComponent OverlappedComponent, AActor OtherActor, UPrimitiveComponent OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult&in SweepResult)
     {
-        Log("OK");
+        if (CurrentBirdState == EBirdState::EBS_Idle || CurrentBirdState == EBirdState::EBS_Dead)
+        {
+            return;
+        }
+
+        if (IsValid(Cast<APipeActor>(OtherActor)))
+        {
+            ChangeBirdState(EBirdState::EBS_Drop);
+            ABirdGameMode BirdGameMode = Cast<ABirdGameMode>(Gameplay::GetGameMode());
+            if (IsValid(BirdGameMode))
+            {
+                BirdGameMode.ChangeBirdGameState(EBirdGameState::EBGS_BirdDrop);
+            }
+        }
+        else
+        {
+            ChangeBirdState(EBirdState::EBS_Dead);
+            ABirdGameMode BirdGameMode = Cast<ABirdGameMode>(Gameplay::GetGameMode());
+            if (IsValid(BirdGameMode))
+            {
+                BirdGameMode.ChangeBirdGameState(EBirdGameState::EBGS_GameOver);
+            }
+        }
     }
 
     protected void UpdateBirdHeadOrientation(float DeltaSeconds)
     {
-        if (CurrentBirdState == EBirdState::EBS_Fly)
+        if (CurrentBirdState == EBirdState::EBS_Fly || CurrentBirdState == EBirdState::EBS_Drop)
         {
             FVector UpVelocity = BirdRenderComp.GetPhysicsLinearVelocity();
             // Log(f"{UpVelocity}");

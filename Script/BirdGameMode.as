@@ -1,8 +1,19 @@
+enum EBirdGameState
+{
+    EBGS_Menu,
+    EBGS_Gaming,
+    EBGS_BirdDrop,
+    EBGS_GameOver
+}
+
 class ABirdGameMode : AGameMode
 {
     ABgActor   BgActor;
     ALandActor LandActor;
     APipeActor PipeActor;
+    ABirdPawn  BirdPawn;
+
+    protected EBirdGameState CurrentGameState;
 
     default DefaultPawnClass = ABirdPawn::StaticClass();
     default GameStateClass = ABirdGameState::StaticClass();
@@ -20,7 +31,7 @@ class ABirdGameMode : AGameMode
     {
         if (State == 0) // Start Game
         {
-            BeginGame();
+            ChangeBirdGameState(EBirdGameState::EBGS_Gaming);
         }
         else if (State == 1) // Reset Game
         {
@@ -39,10 +50,44 @@ class ABirdGameMode : AGameMode
             LandActor.SetLandMoveSpeed();
         }
 
-        ABirdPawn BirdPawn = Cast<ABirdPawn>(Gameplay::GetPlayerPawn(0));
+        BirdPawn = Cast<ABirdPawn>(Gameplay::GetPlayerPawn(0));
         if (IsValid(BirdPawn))
         {
             BirdPawn.ChangeBirdState(EBirdState::EBS_Fly);
+        }
+    }
+
+    void ChangeBirdGameState(EBirdGameState State)
+    {
+        switch (State)
+        {
+            case EBirdGameState::EBGS_Menu:
+                break;
+            case EBirdGameState::EBGS_Gaming:
+                BeginGame();
+                break;
+            case EBirdGameState::EBGS_BirdDrop:
+                StopSceneObject();
+                break;
+            case EBirdGameState::EBGS_GameOver:
+                break;
+        }
+        CurrentGameState = State;
+    }
+
+    protected void StopSceneObject()
+    {
+        if (IsValid(PipeActor))
+        {
+            PipeActor.SetPipeMoveSpeed(0.0);
+        }
+        if (IsValid(LandActor))
+        {
+            LandActor.SetLandMoveSpeed(0.0);
+        }
+        if (IsValid(BirdPawn))
+        {
+            BirdPawn.ChangeBirdState(EBirdState::EBS_Drop);
         }
     }
 };
