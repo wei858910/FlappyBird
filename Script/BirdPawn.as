@@ -50,6 +50,8 @@ class ABirdPawn : APawn
     protected float BobbingRange = 10.;
     protected float CurveTick = 0.;
 
+    protected bool bFadeOnce = false;
+
     UPROPERTY()
     UCurveFloat BobbingCurve;
 
@@ -85,10 +87,28 @@ class ABirdPawn : APawn
                 BirdRenderComp.SetSimulatePhysics(true);
                 break;
             case EBirdState::EBS_Drop:
-                break;
             case EBirdState::EBS_Dead:
-                BirdRenderComp.SetSimulatePhysics(false);
+            {
+                if (!bFadeOnce)
+                {
+                    APlayerController PC = Cast<APlayerController>(GetController());
+                    if (IsValid(PC))
+                    {
+                        ABirdHUD BirdHUD = Cast<ABirdHUD>(PC.GetHUD());
+                        if (IsValid(BirdHUD))
+                        {
+                            BirdHUD.StartScreeFade();
+                            bFadeOnce = true;
+                        }
+                    }
+                }
+                if (CurrentBirdState == EBirdState::EBS_Dead)
+                {
+                    bFadeOnce = false;
+                    BirdRenderComp.SetSimulatePhysics(false);
+                }
                 break;
+            }
         }
         CurrentBirdState = State;
     }

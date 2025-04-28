@@ -13,6 +13,10 @@ class ABirdHUD : AHUD
     protected float NumTextureHalfWidth = 12.;
     protected float PositionY = 40.;
 
+    protected float FadeSpeed = 10;
+    protected float FadeAlphaValue = 0.;
+    protected bool bFade = false;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -31,10 +35,11 @@ class ABirdHUD : AHUD
     {
         // DrawTextureSimple(NumTexture, 200, 200);
         // DrawTexture(NumTexture, 200, 200, 50, 100, 0, 0, 1, 1, FLinearColor::White, EBlendMode::BLEND_Opaque, 1, false, 45, FVector2D(0.5, 0.5));
+        UpdateScreeFade(SizeX, SizeY);
         DrawGameScore(SizeX, SizeY);
     }
 
-    void DrawGameScore(int SizeX, int SizeY)
+    protected void DrawGameScore(int SizeX, int SizeY)
     {
         if (!IsValid(BirdGameState))
         {
@@ -69,10 +74,31 @@ class ABirdHUD : AHUD
             {
                 for (int32 i = 0; i < NumSize; ++i)
                 {
-                    float DrawX = CenterX - (NumSize * NumberOffset)/2.;
+                    float DrawX = CenterX - (NumSize * NumberOffset) / 2.;
                     DrawTextureSimple(NumberTextureArray[Nums[NumSize - i - 1]], DrawX + i * NumberOffset, PositionY);
                 }
             }
         }
+    }
+
+    protected void UpdateScreeFade(int SizeX, int SizeY)
+    {
+        if (bFade)
+        {
+            FadeAlphaValue += (FadeSpeed * Gameplay::GetWorldDeltaSeconds());
+            DrawRect(FLinearColor(1., 1., 1., FadeAlphaValue), 0., 0., SizeX, SizeY);
+            if (FadeAlphaValue > 1 || FadeAlphaValue < 0)
+            {
+                FadeSpeed *= -1.;
+            }
+
+            bFade = !(FadeAlphaValue < 0);
+        }
+    }
+
+    void StartScreeFade()
+    {
+        bFade = true;
+        FadeAlphaValue = 0.;
     }
 };
