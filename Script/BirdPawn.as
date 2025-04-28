@@ -26,16 +26,16 @@ class ABirdPawn : APawn
     default BirdRenderComp.OnComponentBeginOverlap.AddUFunction(this, n"OnBirdRenderComponentBeginOverlap");
 
     UPROPERTY()
-    float OrthoWidth = 520.0;
+    float OrthoWidth = 520.;
 
     UPROPERTY()
-    float Impulse = 300.0;
+    float Impulse = 300.;
 
     UPROPERTY(DefaultComponent)
     UCameraComponent Camera;
-    default Camera.SetRelativeRotation(FRotator(0.0, -90.0, 0.0));
+    default Camera.SetRelativeRotation(FRotator(0., -90., 0.));
     default Camera.SetProjectionMode(ECameraProjectionMode::Orthographic);
-    default Camera.SetRelativeLocation(FVector(0.0, 60.0, 0.0));
+    default Camera.SetRelativeLocation(FVector(0., 60., 0.));
     default Camera.SetOrthoWidth(OrthoWidth);
 
     UPROPERTY(DefaultComponent)
@@ -43,12 +43,12 @@ class ABirdPawn : APawn
 
     protected EBirdState CurrentBirdState = EBirdState::EBS_Idle;
 
-    protected float UpVelocityFactor = 15.0;
+    protected float UpVelocityFactor = 15.;
 
-    protected float BobbingDirection = 1.0;
-    protected float BobbingFactor = 25.0;
-    protected float BobbingRange = 10.0;
-    protected float CurveTick = 0.0;
+    protected float BobbingDirection = 1.;
+    protected float BobbingFactor = 25.;
+    protected float BobbingRange = 10.;
+    protected float CurveTick = 0.;
 
     UPROPERTY()
     UCurveFloat BobbingCurve;
@@ -142,7 +142,7 @@ class ABirdPawn : APawn
 
             float PitchValue = UpVelocity.Z * UpVelocityFactor * DeltaSeconds;
 
-            BirdRenderComp.SetRelativeRotation(FRotator(PitchValue, 0.0, 0.0));
+            BirdRenderComp.SetRelativeRotation(FRotator(PitchValue, 0., 0.));
         }
     }
 
@@ -158,8 +158,8 @@ class ABirdPawn : APawn
 
             // BobbingDirection *= (Math::Abs(BirdRenderComp.GetRelativeLocation().Z) > BobbingRange ? -1 : 1);
 
-            float32 MinTime = 0.0;
-            float32 MaxTime = 0.0;
+            float32 MinTime = 0.;
+            float32 MaxTime = 0.;
             BobbingCurve.GetTimeRange(MinTime, MaxTime);
 
             CurveTick += DeltaSeconds;
@@ -169,7 +169,7 @@ class ABirdPawn : APawn
             }
 
             float Value = BobbingCurve.GetFloatValue(CurveTick);
-            BirdRenderComp.SetRelativeLocation(FVector(0.0, 0.0, Value * BobbingFactor));
+            BirdRenderComp.SetRelativeLocation(FVector(0., 0., Value * BobbingFactor));
         }
     }
 };

@@ -6,11 +6,11 @@ class ABirdHUD : AHUD
     UPROPERTY()
     protected TArray<UTexture> NumberTextureArray;
 
-    protected float NumberOffset = 24.0;
+    protected float NumberOffset = 24.;
 
     protected ABirdGameState BirdGameState;
 
-    protected float NumTextureHalfWidth = 12.0;
+    protected float NumTextureHalfWidth = 12.;
     protected float PositionY = 40.;
 
     UFUNCTION(BlueprintOverride)
@@ -59,7 +59,7 @@ class ABirdHUD : AHUD
 
             int32 NumSize = Nums.Num();
 
-            float CenterX = SizeX / 2.0;
+            float CenterX = SizeX / 2.;
 
             if (Nums.Num() == 0)
             {
@@ -69,7 +69,7 @@ class ABirdHUD : AHUD
             {
                 for (int32 i = 0; i < NumSize; ++i)
                 {
-                    float DrawX = CenterX - (NumSize * NumberOffset)/2.0;
+                    float DrawX = CenterX - (NumSize * NumberOffset)/2.;
                     DrawTextureSimple(NumberTextureArray[Nums[NumSize - i - 1]], DrawX + i * NumberOffset, PositionY);
                 }
             }

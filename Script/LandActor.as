@@ -19,13 +19,13 @@ class ALandActor : AActor
 
     UPROPERTY(DefaultComponent)
     UStaticMeshComponent LandMeshComp;
-    default LandMeshComp.SetRelativeRotation(FRotator(0.0, 0.0, 90.0));
-    default LandMeshComp.SetRelativeScale3D(FVector(3.0, 1.0, 1.0));
+    default LandMeshComp.SetRelativeRotation(FRotator(0., 0., 90.));
+    default LandMeshComp.SetRelativeScale3D(FVector(3., 1., 1.));
     default LandMeshComp.SetStaticMesh(LandMesh);
     default LandMeshComp.SetMaterial(0, LandMat);
 
     UPROPERTY()
-    protected float LandMoveSpeed = 0.2;
+    protected float LandMoveSpeed = 0.;
 
     // float MoveSize = 336.0;
     // float OutOfRange = -336.0;

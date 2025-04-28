@@ -8,23 +8,23 @@ class APipeActor : AActor
 
     protected TArray<bool> PipeGroupUsed;
 
-    protected float ScorePosition = -130;
+    protected float ScorePosition = -130.;
 
     UPaperSprite UpPipeSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_down_Sprite.pipe_down_Sprite"));
     UPaperSprite DownPipSprite = Cast<UPaperSprite>(LoadObject(nullptr, "/Game/Textures/Pipes/pipe_up_Sprite.pipe_up_Sprite"));
 
-    protected float UpPipeSpritePositionZ = 230;
-    protected float DownPipSpritePositionZ = -230;
+    protected float UpPipeSpritePositionZ = 230.;
+    protected float DownPipSpritePositionZ = -230.;
 
-    protected float MinOffsetZ = -80;
-    protected float MaxOffsetZ = 150;
-    protected float DistanceX = 220.0;
-    protected float PositionX = 180.0;
-    protected float PipeOutOfRange = -200.0;
+    protected float MinOffsetZ = -80.;
+    protected float MaxOffsetZ = 150.;
+    protected float DistanceX = 220.;
+    protected float PositionX = 180.;
+    protected float PipeOutOfRange = -200.;
 
     protected const int32 GroupSize = 3;
 
-    protected float PipeMoveSpeed = 0.0;
+    protected float PipeMoveSpeed = 0.;
 
     UFUNCTION(BlueprintOverride)
     void ConstructionScript()
@@ -41,8 +41,8 @@ class APipeActor : AActor
             UpPipeSpriteComp.AttachToComponent(GroupRoot, GroupRoot.Name);
             DownPipSpriteComp.AttachToComponent(GroupRoot, GroupRoot.Name);
 
-            UpPipeSpriteComp.SetRelativeLocation(FVector(0, 0, UpPipeSpritePositionZ));
-            DownPipSpriteComp.SetRelativeLocation(FVector(0, 0, DownPipSpritePositionZ));
+            UpPipeSpriteComp.SetRelativeLocation(FVector(0., 0., UpPipeSpritePositionZ));
+            DownPipSpriteComp.SetRelativeLocation(FVector(0., 0., DownPipSpritePositionZ));
 
             PipeGroup.Add(GroupRoot);
             PipeGroupUsed.Add(false);
@@ -65,11 +65,11 @@ class APipeActor : AActor
     {
         for (int32 i = 0; i < GroupSize; i++)
         {
-            PipeGroup[i].SetRelativeLocation(FVector(PositionX + i * DistanceX, 0.0, RandPipeGroupOffsetZ()));
+            PipeGroup[i].SetRelativeLocation(FVector(PositionX + i * DistanceX, 0., RandPipeGroupOffsetZ()));
         }
     }
 
-    void SetPipeMoveSpeed(float Speed = 100.0)
+    void SetPipeMoveSpeed(float Speed = 100.)
     {
         PipeMoveSpeed = Speed;
     }
