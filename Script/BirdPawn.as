@@ -55,6 +55,15 @@ class ABirdPawn : APawn
     UPROPERTY()
     UCurveFloat BobbingCurve;
 
+    UPROPERTY()
+    USoundWave FlySound;
+
+    UPROPERTY()
+    USoundWave DeadSound;
+
+    UPROPERTY()
+    USoundWave DashSound;
+
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
@@ -104,6 +113,14 @@ class ABirdPawn : APawn
                 }
                 if (CurrentBirdState == EBirdState::EBS_Dead)
                 {
+                    if (!IsValid(DeadSound))
+                    {
+                        DeadSound = Cast<USoundWave>(LoadObject(nullptr, "/Game/Sounds/dead.dead"));
+                    }
+                    if (IsValid(DeadSound))
+                    {
+                        Gameplay::PlaySound2D(DeadSound);
+                    }
                     bFadeOnce = false;
                     BirdRenderComp.SetSimulatePhysics(false);
                 }
@@ -121,6 +138,15 @@ class ABirdPawn : APawn
             return;
         }
 
+        if (!IsValid(FlySound))
+        {
+            FlySound = Cast<USoundWave>(LoadObject(nullptr, "/Game/Sounds/fly.fly"));
+        }
+        if (IsValid(FlySound))
+        {
+            Gameplay::PlaySound2D(FlySound);
+        }
+
         BirdRenderComp.SetPhysicsLinearVelocity(FVector::ZeroVector);
         BirdRenderComp.AddImpulse(FVector::UpVector * Impulse, NAME_None, true);
     }
@@ -135,6 +161,14 @@ class ABirdPawn : APawn
 
         if (IsValid(Cast<APipeActor>(OtherActor)))
         {
+            if (!IsValid(DashSound))
+            {
+                DashSound = Cast<USoundWave>(LoadObject(nullptr, "/Game/Sounds/dash.dash"));
+            }
+            if (IsValid(DashSound))
+            {
+                Gameplay::PlaySound2D(DashSound);
+            }
             ChangeBirdState(EBirdState::EBS_Drop);
             ABirdGameMode BirdGameMode = Cast<ABirdGameMode>(Gameplay::GetGameMode());
             if (IsValid(BirdGameMode))
