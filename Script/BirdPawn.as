@@ -26,7 +26,7 @@ class ABirdPawn : APawn
     default BirdRenderComp.OnComponentBeginOverlap.AddUFunction(this, n"OnBirdRenderComponentBeginOverlap");
 
     UPROPERTY()
-    float OrthoWidth = 520.;
+    float OrthoWidth = 500.;
 
     UPROPERTY()
     float Impulse = 300.;
@@ -214,16 +214,22 @@ class ABirdPawn : APawn
 
             float32 MinTime = 0.;
             float32 MaxTime = 0.;
-            BobbingCurve.GetTimeRange(MinTime, MaxTime);
-
-            CurveTick += DeltaSeconds;
-            if (CurveTick > MaxTime)
+            if (!IsValid(BobbingCurve))
             {
-                CurveTick = MinTime;
+                BobbingCurve = Cast<UCurveFloat>(LoadObject(nullptr, "/Game/Data/Curve/CV_BirdBobbing.CV_BirdBobbing"));
             }
+            if (IsValid(BobbingCurve))
+            {
+                BobbingCurve.GetTimeRange(MinTime, MaxTime);
+                CurveTick += DeltaSeconds;
+                if (CurveTick > MaxTime)
+                {
+                    CurveTick = MinTime;
+                }
 
-            float Value = BobbingCurve.GetFloatValue(CurveTick);
-            BirdRenderComp.SetRelativeLocation(FVector(0., 0., Value * BobbingFactor));
+                float Value = BobbingCurve.GetFloatValue(CurveTick);
+                BirdRenderComp.SetRelativeLocation(FVector(0., 0., Value * BobbingFactor));
+            }
         }
     }
 };
