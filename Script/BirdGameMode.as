@@ -23,6 +23,7 @@ class ABirdGameMode : AGameMode
     UFUNCTION(BlueprintOverride)
     void BeginPlay()
     {
+        System::ExecuteConsoleCommand("r.setRes 288 x 500 w");
         BgActor = Cast<ABgActor>(SpawnActor(ABgActor::StaticClass(), FVector(0., -10., 0.)));
         LandActor = Cast<ALandActor>(SpawnActor(ALandActor::StaticClass(), FVector(0., 2., -210.)));
         PipeActor = Cast<APipeActor>(SpawnActor(APipeActor::StaticClass(), FVector(0., -1., 0.)));
